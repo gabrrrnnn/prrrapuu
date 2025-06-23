@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRRAPUU - Tienda de Armas de Papel</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom right, #d6f5f5, #f0e6ff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+    }
+    .product {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem;
+      background-color: #ffffffb8;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 250px;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .product h2 {
+      color: #4a4a4a;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff6f61;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #ff3b2f;
+    }
+    #cart-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: #3cba54;
+    }
+    #cart {
+      position: fixed;
+      top: 20%;
+      right: 10%;
+      background: white;
+      border: 2px solid #ccc;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: none;
+      max-width: 300px;
+      z-index: 1000;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #4a90e2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧨 PRRAPUU 🧨</h1>
+    <p>La tienda más explosiva de armas de papel</p>
+    <button id="cart-btn">Ver carrito 🛒</button>
+  </header>
+
+  <section class="products">
+    <div class="product">
+      <h2>Rifle de Francotirador</h2>
+      <p>Perfecto para juegos de puntería. Hecho con papel reforzado.</p>
+      <p><strong>Precio:</strong> 6.99 €</p>
+      <button onclick="addToCart('Rifle de Francotirador', 6.99)">Añadir al carrito</button>
+    </div>
+    <div class="product">
+      <h2>Lanza Cohetes</h2>
+      <p>Lanza misiones de imaginación sin límites.</p>
+      <p><strong>Precio:</strong> 8.50 €</p>
+      <button onclick="addToCart('Lanza Cohetes', 8.50)">Añadir al carrito</button>
+    </div>
+    <div class="product">
+      <h2>Katana</h2>
+      <p>Diseño estilizado para ninjas de papel.</p>
+      <p><strong>Precio:</strong> 5.00 €</p>
+      <button onclick="addToCart('Katana', 5.00)">Añadir al carrito</button>
+    </div>
+    <div class="product">
+      <h2>Glock 19</h2>
+      <p>Compacta, segura y muy creativa.</p>
+      <p><strong>Precio:</strong> 4.75 €</p>
+      <button onclick="addToCart('Glock 19', 4.75)">Añadir al carrito</button>
+    </div>
+    <div class="product">
+      <h2>Desert Eagle</h2>
+      <p>Gran diseño con papel grueso. ¡Potencia de imaginación!</p>
+      <p><strong>Precio:</strong> 6.30 €</p>
+      <button onclick="addToCart('Desert Eagle', 6.30)">Añadir al carrito</button>
+    </div>
+  </section>
+
+  <div id="cart">
+    <h3>🛍️ Tu carrito</h3>
+    <ul id="cart-items"></ul>
+    <p><strong>Total:</strong> <span id="cart-total">0.00</span> €</p>
+    <button onclick="clearCart()">Vaciar carrito</button>
+  </div>
+
+  <footer>
+    <p>© 2025 PRRAPUU - Contacto: paperarms@ejemplo.com | Instagram: @prrapuu_papel</p>
+  </footer>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(name + ' añadido al carrito.');
+    }
+
+    function showCart() {
+      const cartBox = document.getElementById('cart');
+      const itemsList = document.getElementById('cart-items');
+      const total = document.getElementById('cart-total');
+      itemsList.innerHTML = '';
+
+      let sum = 0;
+      cart.forEach((item, index) => {
+        sum += item.price;
+        const li = document.createElement('li');
+        li.innerHTML = `${item.name} - ${item.price.toFixed(2)} € <button onclick="removeItem(${index})">❌</button>`;
+        itemsList.appendChild(li);
+      });
+      total.textContent = sum.toFixed(2);
+      cartBox.style.display = 'block';
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      showCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      showCart();
+    }
+
+    document.getElementById('cart-btn').addEventListener('click', showCart);
+  </script>
+</body>
+</html>
